@@ -1,6 +1,6 @@
 {
     "mod_id": "bloods_of_metallurgy",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "mod_page_url": "https://github.com/CharlotteDaemon/Bloods-of-Metallurgy",
     "dll": "BOM.dll",
     "authors": [ "Charlotte W" ],
