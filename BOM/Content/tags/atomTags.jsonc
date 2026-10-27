@@ -1,0 +1,8 @@
+{
+    "om:$successor_purif": {
+        "bloods_of_metallurgy:quickLead": "bloods_of_metallurgy:quickTin",
+        "bloods_of_metallurgy:quickTin": "bloods_of_metallurgy:quickIron",
+        "bloods_of_metallurgy:quickIron": "bloods_of_metallurgy:quickCopper",
+        "bloods_of_metallurgy:quickCopper": "om:quicksilver"
+    }
+}

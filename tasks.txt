@@ -1,0 +1,15 @@
+Tasks:
+* strings --onlyOnChange
+* intermediary --onlyOnChange
+* newMod -name "BloodsOfMetallurgy"
+* copy -toMod "BloodsOfMetallurgy" -from "C:/Users/lnwil/source/repos/Bloods-of-Metallurgy/modMeta.jsonc"
+* copy -toMod "BloodsOfMetallurgy" -from "C:/Users/lnwil/source/repos/Bloods-of-Metallurgy/BOM/bin/Debug/net10.0/BOM.dll"
+* copy -toMod "BloodsOfMetallurgy" -from "C:/Users/lnwil/source/repos/Bloods-of-Metallurgy/Content"
+* devMerge --onlyOnChange -id "bloods_of_metallurgy" --mergeXML
+* merge --onlyOnChange --asNamed
+* export -name "BloodsOfMetallurgy" -outputPath "C:/Users/lnwil/source/repos/Bloods-of-Metallurgy/.builds"
+* run -args "-devEnv -pseudoLang" --attachDebugger --readLogs
+AutoExit:
+  true
+# CopyTasksPath:
+# C:/Users/lnwil/source/repos/Bloods-of-Metallurgy/

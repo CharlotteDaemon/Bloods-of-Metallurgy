@@ -1,0 +1,45 @@
+{
+    "bloods_of_metallurgy": {
+        "": "Bloods Of Metallury",
+        "description": "Adds corresponding quicksilvers to all metals and changes metallicity interactions.",
+        "atoms": {
+            "quickLead": "Sanplumbeus",
+            "quickTin": "Sanstanneus",
+            "quickIron": "Sanferrus",
+            "quickCopper": "Sancuprum",
+            "quickGold":  "Sanaureus"
+        },
+        "parts": {
+            "royalty": {
+                "": "Glyph of Royalty",
+                "description": "Reduces a metal or blood to a lower tier, spits out the leftovers as the equivalent blood."
+            },
+            "divergence": {
+                "": "Glyph of Divergence",
+                "description": "Splits a metal or blood into two lower metals or bloods."
+            },
+            "coronation": {
+                "": "Glyph of Coronation",
+                "description": "Projects two matching bloods."
+            },
+            "promotion": {
+                "": "Glyph of Promotion",
+                "description": "Projects a metal up as many tiers as the provided blood is capable of, outputting the remainder if necessary."
+            },
+            "insurrection": {
+                "": "Glyph of Insurrection",
+                "description": "Swaps the metallicities of any metal with any of the bloods."
+            }
+
+        },
+        "permission_sections": "Bloods Of Metallurgy",
+        "permissions": {
+            "royalty": "Glyph of Royalty",
+            "divergence": "Glyph of Divergence",
+            "coronation": "Glyph of Coronation",
+            "promotion": "Glyph of Promotion",
+            "insurrection": "Glyph of Insurrection"
+
+        }
+    }
+}
