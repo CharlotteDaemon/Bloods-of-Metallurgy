@@ -389,11 +389,9 @@ internal class Parts
                 {
                     metalSize1 -= metalSize2;
                     metalSize2 += metalSize2;
-                    Logger.Log(metalSize1 + " " + metalSize2);
                 }
                 AtomType Output1;
                 AtomType Output2;
-                Logger.Log(metalSize1 + " " + metalSize2);
                 if (metalSize1 != 0)
                 {
                     MutationsAPI.MetalFromAttributes(isQuix1, metalSize1, out Output1);
