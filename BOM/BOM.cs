@@ -84,6 +84,7 @@ internal class BloodsOfMetallurgy : QuintessentialMod
     {
         
         BloodsOfMetallurgy.Instance.AddRecipe(new(BloodProjection), "bloods_of_metallurgy:bloodProjection", "om:projection"); // this loads our magic purification altering code
+        Sounds.AddSounds();
         Atoms.AddAtomTypes(); // Add the atoms
         // Util.GlyphLUT.GenerateLUTs(); // This code is commented out.
         MutationsAPI.AddTransmutations(); // Adds tables and recipes. See MutationsAPI.cs for more

@@ -241,6 +241,7 @@ internal class Parts
                 CoroB.molecule.RemoveAtom(CoroB.pos);
                 CoroA.molecule.ReplaceAtom(recipe.output, CoroA.pos);
                 CoroA.atom.transmutationEffect = new TransmutationEffect(sim.solutionEditor, (TransmutationEffectRenderMode)1, CoroA.atomType, Assets.textures.atoms.projection_effect, 30f);
+                BOM.Sounds.Coronation_Sound.PlaySound(sim.solutionEditor.method_506());
                 return true;
             }
         }
@@ -256,13 +257,25 @@ internal class Parts
         {
             return false;
         }
+        MutationsAPI.AttributesFromMetal(RoyalA.atomType, out bool isQuix, out int _);
         foreach (var recipe in MutationsAPI.royaltyTransmutations) // choose transmutation based off recipe
         {
             if (recipe.input == RoyalA.atomType) // if transmutation is proper, execute it
             {
                 RoyalA.molecule.ReplaceAtom(recipe.output1, RoyalA.pos);
-                sim.SpawnAtomRelative(recipe.output2, part, RoyalBowlO);
-                RoyalA.atom.transmutationEffect = new TransmutationEffect(sim.solutionEditor, (TransmutationEffectRenderMode)1, RoyalA.atomType, Assets.textures.atoms.projection_effect, 30f);
+                Atom spawned = sim.SpawnAtomRelative(recipe.output2, part, RoyalBowlO);
+                
+                if (isQuix)
+                {
+                    BOM.Sounds.Royalty_Quix.PlaySound(sim.solutionEditor.method_506());
+                }
+                else
+                {
+                    BOM.Sounds.Royalty_Metal.PlaySound(sim.solutionEditor.method_506());
+                }
+
+                spawned.transmutationEffect = new TransmutationEffect(sim.solutionEditor, (TransmutationEffectRenderMode)1, spawned.atomType, Assets.textures.atoms.rejection_effect_metal, 30f);
+                RoyalA.atom.transmutationEffect = new TransmutationEffect(sim.solutionEditor, (TransmutationEffectRenderMode)1, RoyalA.atomType, Assets.textures.atoms.rejection_effect_quicksilver, 30f);
                 return true;
             }
         }
@@ -275,7 +288,7 @@ internal class Parts
             return false;
         }
         if (((Subject.isHeldByArm || // Make sure input isn't grabbed or in a molecule and that there aren't any atoms in the way of the output
-              Subject.inMultiAtomMolecule)) &&
+              Subject.inMultiAtomMolecule)) ||
             (sim.FindAtomRelative(part, DiverOut1Loc).GetOrDefault(out AtomReference _) ||
              sim.FindAtomRelative(part, DiverOut2Loc).GetOrDefault(out AtomReference _)))
         {
@@ -289,7 +302,8 @@ internal class Parts
                 sim.solutionEditor.DrawFallingAtom(Subject);
                 sim.SpawnAtomRelative(recipe.output1, part, DiverOut1Loc);
                 sim.SpawnAtomRelative(recipe.output2, part, DiverOut2Loc);
-                
+                BOM.Sounds.Divergence_Sound.PlaySound(sim.solutionEditor.method_506());
+
                 return true;
             }
         }
@@ -350,6 +364,8 @@ internal class Parts
 
                 sim.SpawnColliderRelative(part, InsurOut1Loc); // Colliders for rising atoms
                 sim.SpawnColliderRelative(part, InsurOut2Loc);
+
+                BOM.Sounds.Insurrection_Sound.PlaySound(sim.solutionEditor.method_506());
 
                 return true;
             }
@@ -414,14 +430,18 @@ internal class Parts
                     sim.SpawnColliderRelative(part, ProBloodExcessLoc); // Colliders for rising atoms
                     pss.processingAtoms = new AtomType[] { Output1 }; // send out outputs pt1
                     pss.isProcessing = true;
+                    BOM.Sounds.Promotion_Excess.PlaySound(sim.solutionEditor.method_506());
+
                 }
                 MutationsAPI.MetalFromAttributes(isQuix2, metalSize2, out Output2);
 
                 BloodIn.molecule.RemoveAtom(BloodIn.pos); // Kill inputs
-
                 sim.solutionEditor.DrawFallingAtom(BloodIn); // draw falling atoms
-
                 MetalIn.molecule.ReplaceAtom(Output2, MetalIn.pos);
+
+                MetalIn.atom.transmutationEffect = new TransmutationEffect(sim.solutionEditor, (TransmutationEffectRenderMode)1, MetalIn.atomType, Assets.textures.atoms.projection_effect, 30f);
+
+                BOM.Sounds.Promotion_Sound.PlaySound(sim.solutionEditor.method_506());
 
                 return true;
             }
