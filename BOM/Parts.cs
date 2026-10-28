@@ -9,6 +9,10 @@ namespace BOM;
 
 internal class Parts
 {
+    public static Texture GenericMetalIn = Assets.textures.parts.purification_glyph.lead_symbol;
+    public static Texture GenericQuixIn = Assets.textures.parts.projection_glyph.quicksilver_symbol;
+    public static Texture GenericMetalBowl = Assets.textures.parts.proliferation_glyph.proliferation_metals;
+
     public static PartType Coronation;
     public static Texture CoroBase = Assets.textures.parts.projection_glyph.@base;
     public static Texture CoroBowlSkin = Assets.textures.parts.projection_glyph.metal_bowl;
@@ -20,8 +24,11 @@ internal class Parts
 
     public static PartType Royalty;
     public static Texture RoyalBase = Assets.textures.parts.projection_glyph.@base;
-    public static Texture RoyalBowlISkin = Assets.textures.parts.projection_glyph.metal_bowl;
+    public static Texture RoyalBowlISkin = AssetLoaderHelper.LoadTexture("textures/parts/CharlieW/BOM/Royalty/input_bowl");
+    public static Texture RoyalBowlISymbol = AssetLoaderHelper.LoadTexture("textures/parts/CharlieW/BOM/Royalty/lead_symbol_down");
+    public static Texture RoyalBowlIOverlaySkin = AssetLoaderHelper.LoadTexture("textures/parts/CharlieW/BOM/Royalty/in_overlay");
     public static Texture RoyalHoleOSkin = Assets.textures.parts.rejection_glyph.metal_bowl;
+    public static Texture RoyalBowlOSymbol = AssetLoaderHelper.LoadTexture("textures/parts/CharlieW/BOM/Royalty/quicksilver_symbol");
     public static Texture RoyalIcon = Assets.textures.parts.icons.rejection;
     public static Texture RoyalIconHover = Assets.textures.parts.icons.rejection_hover;
     public static HexIndex RoyalBowlI = new HexIndex(0, 0);
@@ -90,6 +97,8 @@ internal class Parts
             renderer.RenderBase(CoroBase, Vector2.Zero, new Vector2(42f, 48f), 0f);
             renderer.RenderRotating(CoroBowlSkin, CoroBowl, Vector2.Zero);
             renderer.RenderRotating(CoroHoleSkin, CoroHole, Vector2.Zero);
+            renderer.RenderUpright(GenericMetalBowl, CoroBowl, Vector2.Zero);
+            renderer.RenderUpright(GenericQuixIn, CoroHole, Vector2.Zero);
         });
         Royalty = new()
         {
@@ -107,7 +116,10 @@ internal class Parts
         {
             renderer.RenderBase(RoyalBase, Vector2.Zero, new Vector2(42f, 48f), 0f);
             renderer.RenderRotating(RoyalBowlISkin, RoyalBowlI, Vector2.Zero);
+            renderer.RenderUpright(RoyalBowlIOverlaySkin, RoyalBowlI, Vector2.Zero);
+            renderer.RenderUpright(RoyalBowlISymbol, RoyalBowlI, Vector2.Zero);
             renderer.RenderRotating(RoyalHoleOSkin, RoyalBowlO, Vector2.Zero);
+            renderer.RenderUpright(RoyalBowlOSymbol, RoyalBowlO, Vector2.Zero);
         });
         Divergence = new()
         {
@@ -125,6 +137,7 @@ internal class Parts
         {
             renderer.RenderBase(DiverBase, Vector2.Zero, DiverBase.GetHalfSizeRounded(), 0f);
             renderer.RenderRotating(DiverInHole, DiverInLoc, Vector2.Zero);
+            renderer.RenderUpright(GenericMetalIn, DiverInLoc, Vector2.Zero);
             renderer.RenderUpright(DiverOut1, DiverOut1Loc, Vector2.Zero);
             renderer.RenderUpright(DiverOut2, DiverOut2Loc, Vector2.Zero);
             renderer.RenderBase(DiverConnectors, Vector2.Zero, DiverConnectors.GetHalfSizeRounded(), 0f);
@@ -155,8 +168,10 @@ internal class Parts
             PartSimState pss = editor.GetSimulation().GetSimState(part);
             renderer.RenderBase(InsurConnectors, Vector2.Zero, InsurConnectors.GetHalfSizeRounded(), 0f);
             renderer.RenderBase(InsurConnectors, Vector2.Zero, InsurConnectorsShadow.GetHalfSizeRounded(), 0f);
-            renderer.RenderIris(intermState, InsurOut1Loc, time, InsurOutLower, Assets.textures.parts.iris_full, InsurOutUpper, pss.wasActivated ? pss.processingAtoms[0] : null);
-            renderer.RenderIris(intermState, InsurOut2Loc, time, InsurOutLower, Assets.textures.parts.iris_full, InsurOutUpper, pss.wasActivated ? pss.processingAtoms[1] : null);
+            renderer.RenderIris(intermState, InsurOut1Loc, time, InsurOutLower, Assets.textures.parts.iris_full_division_low, InsurOutUpper, pss.wasActivated ? pss.processingAtoms[0] : null);
+            renderer.RenderIris(intermState, InsurOut2Loc, time, InsurOutLower, Assets.textures.parts.iris_full_division_high, InsurOutUpper, pss.wasActivated ? pss.processingAtoms[1] : null);
+            renderer.RenderUpright(GenericMetalIn, InsurIn1Loc, Vector2.Zero);
+            renderer.RenderUpright(GenericMetalIn, InsurIn2Loc, Vector2.Zero);
             // renderer.RenderUpright(DiverOut1Ring, InsurOut1Loc, Vector2.Zero);
             // renderer.RenderUpright(DiverOut1Ring, InsurOut2Loc, Vector2.Zero);
         });
@@ -179,6 +194,7 @@ internal class Parts
             renderer.RenderRotating(ProInputRing, ProBloodInLoc, Vector2.Zero);
             renderer.RenderRotating(ProBowl, ProMetalBowlLoc, Vector2.Zero);
             renderer.RenderUpright(ProMetals, ProMetalBowlLoc, Vector2.Zero);
+            renderer.RenderUpright(GenericQuixIn, ProBloodInLoc, Vector2.Zero);
             IntermediatePartState intermState = editor.GetIntermState(part, pos);
             float time = editor.GetCycleTime();
             PartSimState pss = editor.GetSimulation().GetSimState(part);
@@ -209,18 +225,18 @@ internal class Parts
 
     public static bool CoronationCycle(Sim sim, Part part, PartSimState pss, GlyphRecipe _, bool first)
     {
-        if ((!sim.FindAtomRelative(part, CoroBowl).GetOrDefault(out AtomReference CoroA)) || 
+        if ((!sim.FindAtomRelative(part, CoroBowl).GetOrDefault(out AtomReference CoroA)) || // Check to see if atoms are present
             (!sim.FindAtomRelative(part, CoroHole).GetOrDefault(out AtomReference CoroB)))
         {
             return false;
         }
-        if (CoroB.isHeldByArm || CoroB.inMultiAtomMolecule)
+        if (CoroB.isHeldByArm || CoroB.inMultiAtomMolecule) // make sure the hole input atom isn't held or in a molecule
         {
             return false;
         }
-        foreach (var recipe in MutationsAPI.coronationTransmutations)
+        foreach (var recipe in MutationsAPI.coronationTransmutations) // choose transmutation based off recipe
         {
-            if (recipe.input == CoroA.atomType && recipe.host == CoroB.atomType)
+            if (recipe.input == CoroA.atomType && recipe.host == CoroB.atomType) // if transmutation is proper, execute it
             {
                 CoroB.molecule.RemoveAtom(CoroB.pos);
                 CoroA.molecule.ReplaceAtom(recipe.output, CoroA.pos);
@@ -232,17 +248,17 @@ internal class Parts
     }
     public static bool RoyalCycle(Sim sim, Part part, PartSimState pss, GlyphRecipe _, bool first)
     {
-        if (!sim.FindAtomRelative(part, RoyalBowlI).GetOrDefault(out AtomReference RoyalA))
+        if (!sim.FindAtomRelative(part, RoyalBowlI).GetOrDefault(out AtomReference RoyalA)) // check for input
         {
             return false;
         }
-        if (sim.FindAtomRelative(part, RoyalBowlO).GetOrDefault(out AtomReference RoyalB))
+        if (sim.FindAtomRelative(part, RoyalBowlO).GetOrDefault(out AtomReference RoyalB)) // check for something blocking the output
         {
             return false;
         }
-        foreach (var recipe in MutationsAPI.royaltyTransmutations)
+        foreach (var recipe in MutationsAPI.royaltyTransmutations) // choose transmutation based off recipe
         {
-            if (recipe.input == RoyalA.atomType)
+            if (recipe.input == RoyalA.atomType) // if transmutation is proper, execute it
             {
                 RoyalA.molecule.ReplaceAtom(recipe.output1, RoyalA.pos);
                 sim.SpawnAtomRelative(recipe.output2, part, RoyalBowlO);
@@ -254,22 +270,20 @@ internal class Parts
     }
     public static bool DiverCycle(Sim sim, Part part, PartSimState pss, GlyphRecipe _, bool first)
     {
-        if ((!sim.FindAtomRelative(part, DiverInLoc).GetOrDefault(out AtomReference Subject)))
+        if ((!sim.FindAtomRelative(part, DiverInLoc).GetOrDefault(out AtomReference Subject))) // CHECK FOR INPUT oops caps
         {
             return false;
         }
-        if ((Subject.isHeldByArm || Subject.inMultiAtomMolecule))
+        if (((Subject.isHeldByArm || // Make sure input isn't grabbed or in a molecule and that there aren't any atoms in the way of the output
+              Subject.inMultiAtomMolecule)) &&
+            (sim.FindAtomRelative(part, DiverOut1Loc).GetOrDefault(out AtomReference _) ||
+             sim.FindAtomRelative(part, DiverOut2Loc).GetOrDefault(out AtomReference _)))
         {
             return false;
         }
-        if (sim.FindAtomRelative(part, DiverOut1Loc).GetOrDefault(out AtomReference IDC) ||
-            sim.FindAtomRelative(part, DiverOut2Loc).GetOrDefault(out AtomReference IDC2))
+        foreach (var recipe in MutationsAPI.divergenceTransmutations) // choose transmutation based off recipe
         {
-            return false;
-        }
-        foreach (var recipe in MutationsAPI.divergenceTransmutations)
-        {
-            if (recipe.input == Subject.atomType)
+            if (recipe.input == Subject.atomType) // if transmutation is proper, execute it
             {
                 Subject.molecule.RemoveAtom(Subject.pos);
                 sim.solutionEditor.DrawFallingAtom(Subject);
@@ -292,27 +306,23 @@ internal class Parts
                 {
                     return false;
                 }
-                if ((Subject1.isHeldByArm || Subject1.inMultiAtomMolecule) || // Check if atom 1 is a singlet 
-                    (Subject2.isHeldByArm || Subject2.inMultiAtomMolecule) || // Check if atom 2 is a singlet
-                    (Subject1.atomType == Subject2.atomType))                 // Check to make sure atoms aren't the same
-                {
-                    return false;
-                }
-                if (sim.FindAtomRelative(part, InsurOut1Loc).GetOrDefault(out AtomReference IDC) || // make sure outputs are clear
-                    sim.FindAtomRelative(part, InsurOut2Loc).GetOrDefault(out AtomReference IDC2))
-                {
-                    return false;
-                }
                 if (!(MutationsAPI.AttributesFromMetal(Subject1.atomType, out bool isQuix1, out int metalSize1)) || // grab atoms 1 & 2 data
                     !(MutationsAPI.AttributesFromMetal(Subject2.atomType, out bool isQuix2, out int metalSize2)))
                 {
                     return false;
                 }
-                if (isQuix1 == isQuix2) // make sure atoms aren't both metal or quix
+                if ((Subject1.isHeldByArm || Subject1.inMultiAtomMolecule) || // Check if atom 1 is a singlet 
+                    (Subject2.isHeldByArm || Subject2.inMultiAtomMolecule) || // Check if atom 2 is a singlet
+                    (isQuix1 == isQuix2 || metalSize1 == metalSize2))         // Check to make sure atoms aren't the same size or type
                 {
                     return false;
                 }
-
+                if (sim.FindAtomRelative(part, InsurOut1Loc).GetOrDefault(out AtomReference _) || // make sure outputs are clear
+                    sim.FindAtomRelative(part, InsurOut2Loc).GetOrDefault(out AtomReference _))
+                {
+                    return false;
+                }
+                
                 bool temp = isQuix1; // swap quicknesses
                 isQuix1 = isQuix2;
                 isQuix2 = temp;
@@ -328,8 +338,6 @@ internal class Parts
                     MutationsAPI.MetalFromAttributes(isQuix1, metalSize1, out Output2); // get output atoms from our modified attributes 
                     MutationsAPI.MetalFromAttributes(isQuix2, metalSize2, out Output1); // but flipped because quix on bottom
                 }
-
-               
 
                 Subject1.molecule.RemoveAtom(Subject1.pos); // Kill inputs
                 Subject2.molecule.RemoveAtom(Subject2.pos);
@@ -388,10 +396,18 @@ internal class Parts
                 while (metalSize1 >= metalSize2)
                 {
                     metalSize1 -= metalSize2;
-                    metalSize2 += metalSize2;
+                    metalSize2 <<= 1;
                 }
+
                 AtomType Output1;
                 AtomType Output2;
+                
+                if (metalSize2 > 32)
+                {
+                    metalSize1 = 32;
+                    metalSize2 = 32;
+                    Logger.Log("Hey, you tried to project gold you idiot. Stop doing that. Here, take your Quickgold back");
+                }
                 if (metalSize1 != 0)
                 {
                     MutationsAPI.MetalFromAttributes(isQuix1, metalSize1, out Output1);

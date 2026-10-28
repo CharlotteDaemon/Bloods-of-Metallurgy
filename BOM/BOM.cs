@@ -12,7 +12,7 @@ internal class BloodsOfMetallurgy : QuintessentialMod
         Logger.Log("BOM: Letting the quicksilver flow");
         
     }
-    public static bool BloodProjection(Sim sim, Part part)
+    public static bool BloodProjection(Sim sim, Part part) // Custom recipe that (ik that's not the right terminology but) hooks into purification. not entirely sure how it works but yeah.
     {
         if (!sim.GetAtomReference(part, new HexIndex(1, 0), false, out var projected) ||
             !AtomTag.AtomTags["om:$successor_proj"].HasAtom(projected, out var result) ||
@@ -83,11 +83,11 @@ internal class BloodsOfMetallurgy : QuintessentialMod
     public override void LoadContent()
     {
         
-        BloodsOfMetallurgy.Instance.AddRecipe(new(BloodProjection), "bloods_of_metallurgy:bloodProjection", "om:projection");
-        Atoms.AddAtomTypes();
-        // Util.GlyphLUT.GenerateLUTs();
-        MutationsAPI.AddTransmutations();
-        Parts.AddParts();
+        BloodsOfMetallurgy.Instance.AddRecipe(new(BloodProjection), "bloods_of_metallurgy:bloodProjection", "om:projection"); // this loads our magic purification altering code
+        Atoms.AddAtomTypes(); // Add the atoms
+        // Util.GlyphLUT.GenerateLUTs(); // This code is commented out.
+        MutationsAPI.AddTransmutations(); // Adds tables and recipes. See MutationsAPI.cs for more
+        Parts.AddParts(); // Add parts
         Logger.Log("BOM: successfully drenched in the bloods of the metals");
     }
     public override void LoadCompatContent() { }

@@ -96,30 +96,35 @@ internal static class MutationsAPI
         var Tin = AtomTypes.tin;
         var Lead = AtomTypes.lead;
         
-        /******/
+        /*** Coronation ***/
+        /* Hole Atom, Bowl Atom, Result */
         coronationTransmutations.Add(new(QCopper, QCopper, QSilver));
         coronationTransmutations.Add(new(QIron, QIron, QCopper));
         coronationTransmutations.Add(new(QTin, QTin, QIron));
         coronationTransmutations.Add(new(QLead, QLead, QTin));
-        /******/
+        /*** Royalty ***/
+        /* Bowl Atom, Bowl Atom Result, Other Bowl New Atom Result */
         royaltyTransmutations.Add(new(Gold, Silver, QSilver));
         royaltyTransmutations.Add(new(Silver, Copper, QCopper));
         royaltyTransmutations.Add(new(Copper, Iron, QIron));
         royaltyTransmutations.Add(new(Iron, Tin, QTin));
         royaltyTransmutations.Add(new(Tin, Lead, QLead));
 
+        /* Bowl Atom, Bowl Atom Result, Other Bowl New Atom Result */
         royaltyTransmutations.Add(new(QGold, QSilver, QSilver));
         royaltyTransmutations.Add(new(QSilver, QCopper, QCopper));
         royaltyTransmutations.Add(new(QCopper, QIron, QIron));
         royaltyTransmutations.Add(new(QIron, QTin, QTin));
         royaltyTransmutations.Add(new(QTin, QLead, QLead));
-        /******/
+        /*** Divergence ***/
+        /* Hole Atom, Left Atom Out, Right Atom Out (Usually same at Left Atom) */
         divergenceTransmutations.Add(new(Gold, Silver, Silver));
         divergenceTransmutations.Add(new(Silver, Copper, Copper));
         divergenceTransmutations.Add(new(Copper, Iron, Iron));
         divergenceTransmutations.Add(new(Iron, Tin, Tin));
         divergenceTransmutations.Add(new(Tin, Lead, Lead));
-        /******/
+        /*** Metallicity Chart ***/
+        /* Atoms.<AtomName>, true if this is meant to be a quicksilver-like, metallicity */
         metalChart.Add(new InsurrectionData(Gold, false, 32));
         metalChart.Add(new InsurrectionData(Silver, false, 16));
         metalChart.Add(new InsurrectionData(Copper, false, 8));
@@ -133,7 +138,7 @@ internal static class MutationsAPI
         metalChart.Add(new InsurrectionData(QIron, true, 4));
         metalChart.Add(new InsurrectionData(QTin, true, 2));
         metalChart.Add(new InsurrectionData(QLead, true, 1));
-        /******/
+        /*** End ***/
 
     }
 
