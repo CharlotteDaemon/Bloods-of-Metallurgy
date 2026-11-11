@@ -86,8 +86,8 @@ internal class Parts
             isFullHexCover = true,
             glowTexture = Assets.textures.select.double_glow,
             strokeTexture = Assets.textures.select.double_stroke,
-            baseTexture = CoroIcon,
-            hoverTexture = CoroIconHover,
+            iconTexture = CoroIcon,
+            iconHoverTexture = CoroIconHover,
             glyphHexes = new HexIndex[] { CoroBowl, CoroHole },
             permissionCategory = PuzzlePermissions.None,
             CustomPermissionCheck = perms => perms.Contains(BloodsOfMetallurgy.Instance.GetIdentifier("coronation"))
@@ -106,8 +106,8 @@ internal class Parts
             isFullHexCover = true,
             glowTexture = Assets.textures.select.double_glow,
             strokeTexture = Assets.textures.select.double_stroke,
-            baseTexture = RoyalIcon,
-            hoverTexture = RoyalIconHover,
+            iconTexture = RoyalIcon,
+            iconHoverTexture = RoyalIconHover,
             glyphHexes = new HexIndex[] { RoyalBowlI, RoyalBowlO },
             permissionCategory = PuzzlePermissions.None,
             CustomPermissionCheck = perms => perms.Contains(BloodsOfMetallurgy.Instance.GetIdentifier("royalty"))
@@ -127,8 +127,8 @@ internal class Parts
             isFullHexCover = true,
             glowTexture = Assets.textures.select.triple_glow,
             strokeTexture = Assets.textures.select.triple_stroke,
-            baseTexture = DiverIcon,
-            hoverTexture = DiverIconHover,
+            iconTexture = DiverIcon,
+            iconHoverTexture = DiverIconHover,
             glyphHexes = new HexIndex[] { DiverInLoc, DiverOut1Loc, DiverOut2Loc },
             permissionCategory = PuzzlePermissions.None,
             CustomPermissionCheck = perms => perms.Contains(BloodsOfMetallurgy.Instance.GetIdentifier("divergence"))
@@ -150,8 +150,8 @@ internal class Parts
             isFullHexCover = true,
             glowTexture = Assets.textures.select.diamond_glow,
             strokeTexture = Assets.textures.select.diamond_stroke,
-            baseTexture = InsurIcon,
-            hoverTexture = InsurIconHover,
+            iconTexture = InsurIcon,
+            iconHoverTexture = InsurIconHover,
             glyphHexes = new HexIndex[] { InsurIn1Loc, InsurIn2Loc, InsurOut1Loc, InsurOut2Loc },
             permissionCategory = PuzzlePermissions.None,
             CustomPermissionCheck = perms => perms.Contains(BloodsOfMetallurgy.Instance.GetIdentifier("insurrection"))
@@ -181,8 +181,8 @@ internal class Parts
             isFullHexCover = true,
             glowTexture = Assets.textures.select.proliferation_glow,
             strokeTexture = Assets.textures.select.proliferation_stroke,
-            baseTexture = ProIcon,
-            hoverTexture = ProIconHover,
+            iconTexture = ProIcon,
+            iconHoverTexture = ProIconHover,
             glyphHexes = new HexIndex[] { ProBloodInLoc, ProMetalBowlLoc, ProBloodExcessLoc},
             permissionCategory = PuzzlePermissions.None,
             CustomPermissionCheck = perms => perms.Contains(BloodsOfMetallurgy.Instance.GetIdentifier("promotion"))
@@ -241,7 +241,7 @@ internal class Parts
                 CoroB.molecule.RemoveAtom(CoroB.pos);
                 CoroA.molecule.ReplaceAtom(recipe.output, CoroA.pos);
                 CoroA.atom.transmutationEffect = new TransmutationEffect(sim.solutionEditor, (TransmutationEffectRenderMode)1, CoroA.atomType, Assets.textures.atoms.projection_effect, 30f);
-                BOM.Sounds.Coronation_Sound.PlaySound(sim.solutionEditor.method_506());
+                BOM.Sounds.Coronation_Sound.PlaySound(sim.solutionEditor.GetVolumeMultiplier());
                 return true;
             }
         }
@@ -267,11 +267,11 @@ internal class Parts
                 
                 if (isQuix)
                 {
-                    BOM.Sounds.Royalty_Quix.PlaySound(sim.solutionEditor.method_506());
+                    BOM.Sounds.Royalty_Quix.PlaySound(sim.solutionEditor.GetVolumeMultiplier());
                 }
                 else
                 {
-                    BOM.Sounds.Royalty_Metal.PlaySound(sim.solutionEditor.method_506());
+                    BOM.Sounds.Royalty_Metal.PlaySound(sim.solutionEditor.GetVolumeMultiplier());
                 }
 
                 spawned.transmutationEffect = new TransmutationEffect(sim.solutionEditor, (TransmutationEffectRenderMode)1, spawned.atomType, Assets.textures.atoms.rejection_effect_metal, 30f);
@@ -302,7 +302,7 @@ internal class Parts
                 sim.solutionEditor.DrawFallingAtom(Subject);
                 sim.SpawnAtomRelative(recipe.output1, part, DiverOut1Loc);
                 sim.SpawnAtomRelative(recipe.output2, part, DiverOut2Loc);
-                BOM.Sounds.Divergence_Sound.PlaySound(sim.solutionEditor.method_506());
+                BOM.Sounds.Divergence_Sound.PlaySound(sim.solutionEditor.GetVolumeMultiplier());
 
                 return true;
             }
@@ -365,7 +365,7 @@ internal class Parts
                 sim.SpawnColliderRelative(part, InsurOut1Loc); // Colliders for rising atoms
                 sim.SpawnColliderRelative(part, InsurOut2Loc);
 
-                BOM.Sounds.Insurrection_Sound.PlaySound(sim.solutionEditor.method_506());
+                BOM.Sounds.Insurrection_Sound.PlaySound(sim.solutionEditor.GetVolumeMultiplier());
 
                 return true;
             }
@@ -430,7 +430,7 @@ internal class Parts
                     sim.SpawnColliderRelative(part, ProBloodExcessLoc); // Colliders for rising atoms
                     pss.processingAtoms = new AtomType[] { Output1 }; // send out outputs pt1
                     pss.isProcessing = true;
-                    BOM.Sounds.Promotion_Excess.PlaySound(sim.solutionEditor.method_506());
+                    BOM.Sounds.Promotion_Excess.PlaySound(sim.solutionEditor.GetVolumeMultiplier());
 
                 }
                 MutationsAPI.MetalFromAttributes(isQuix2, metalSize2, out Output2);
@@ -441,7 +441,7 @@ internal class Parts
 
                 MetalIn.atom.transmutationEffect = new TransmutationEffect(sim.solutionEditor, (TransmutationEffectRenderMode)1, MetalIn.atomType, Assets.textures.atoms.projection_effect, 30f);
 
-                BOM.Sounds.Promotion_Sound.PlaySound(sim.solutionEditor.method_506());
+                BOM.Sounds.Promotion_Sound.PlaySound(sim.solutionEditor.GetVolumeMultiplier());
 
                 return true;
             }

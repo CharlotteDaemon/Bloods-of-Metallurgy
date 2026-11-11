@@ -9,7 +9,7 @@ internal class BloodsOfMetallurgy : QuintessentialMod
 
     public override void Load()
     {
-        Logger.Log("BOM: Letting the quicksilver flow");
+        BloodsOfMetallurgy.Instance.Log.Info("BOM: Letting the quicksilver flow");
         
     }
     public static bool BloodProjection(Sim sim, Part part) // Custom recipe that (ik that's not the right terminology but) hooks into purification. not entirely sure how it works but yeah.
@@ -89,7 +89,7 @@ internal class BloodsOfMetallurgy : QuintessentialMod
         // Util.GlyphLUT.GenerateLUTs(); // This code is commented out.
         MutationsAPI.AddTransmutations(); // Adds tables and recipes. See MutationsAPI.cs for more
         Parts.AddParts(); // Add parts
-        Logger.Log("BOM: successfully drenched in the bloods of the metals");
+        BloodsOfMetallurgy.Instance.Log.Info("BOM: successfully drenched in the bloods of the metals");
     }
     public override void LoadCompatContent() { }
     public override void FinaliseContent() { }
@@ -97,6 +97,6 @@ internal class BloodsOfMetallurgy : QuintessentialMod
     public override void PostLoad() { }
     public override void Unload()
     {
-        Logger.Log("BOM: patching my wounds and going to sleep.");
+        BloodsOfMetallurgy.Instance.Log.Info("BOM: patching my wounds and going to sleep.");
     }
 }
